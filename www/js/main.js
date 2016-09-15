@@ -4,6 +4,8 @@ $(function() {
   var timer = null;
   var minHour = null;
   var maxHour = null;
+  var startDate = null;
+  var endDate = null;
   var weekdays = null;
   var weekends = null;
   var pageSize = null;
@@ -21,10 +23,21 @@ $(function() {
 
     $('#weekdayCheckbox, #weekendCheckbox').change(optionsChanged);
 
+    $('#startDate, #endDate').datepicker({
+      autoclose: true,
+      daysOfWeekHighlighted: '0,6',
+      format: 'dd-mm-yyyy',
+      language: 'ro',
+      todayBtn: 'linked',
+      todayHighlight: true,
+    }).on('change', optionsChanged);
+
     stemRow = $('#stemRow').detach().removeAttr('id');
 
     minHour = $('#minHour').text();
     maxHour = $('#maxHour').text();
+    startDate = $('#startDate').val();
+    endDate = $('#endDate').val();
     weekdays = $('#weekdayCheckbox').is(':checked');
     weekends = $('#weekendCheckbox').is(':checked');
     pageSize = $('#pageSize').text();
@@ -46,15 +59,21 @@ $(function() {
     var parts = $('#hourSlider').val().split(',');
     var newMinHour = parts[0];
     var newMaxHour = parts[1];
+    var newStartDate = $('#startDate').val();
+    var newEndDate = $('#endDate').val();
     var newWeekdays = $('#weekdayCheckbox').is(':checked');
     var newWeekends = $('#weekendCheckbox').is(':checked');
 
     if ((newMinHour != minHour) ||
         (newMaxHour != maxHour) ||
+        (newStartDate != startDate) ||
+        (newEndDate != endDate) ||
         (newWeekdays != weekdays) ||
         (newWeekends != weekends)) {
       minHour = newMinHour;
       maxHour = newMaxHour;
+      startDate = newStartDate;
+      endDate = newEndDate;
       weekdays = newWeekdays;
       weekends = newWeekends;
 
@@ -69,6 +88,8 @@ $(function() {
     window.location.search = $.param({
       h1: minHour,
       h2: maxHour,
+      d1: startDate,
+      d2: endDate,
       wd: +weekdays,
       we: +weekends,
     });
@@ -82,6 +103,8 @@ $(function() {
       data: {
         minHour: minHour,
         maxHour: maxHour,
+        startDate: startDate,
+        endDate: endDate,
         weekdays: weekdays,
         weekends: weekends,
         page: pagesLoaded,
