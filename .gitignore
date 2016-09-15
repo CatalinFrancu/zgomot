@@ -1,7 +1,6 @@
 *~
-clip/
-mp3/
-mp3-private/
+clip
+mp3
 scripts/clip
-sound-index/
+sound-index
 templates_c/

@@ -7,7 +7,7 @@
 # sleep $delay
 # echo "Recording (almost) an hour"
 
-ROOT=$(dirname $(dirname $0))
+ROOT=$1
 YEAR=`date +'%Y'`
 MONTH=`date +'%m'`
 DAY=`date +'%d'`
