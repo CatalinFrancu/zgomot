@@ -20,7 +20,7 @@ $processedDates = array_flip($processedDates);
 
 // get all the daily clip folders containing a .eval file
 $evalFiles = [];
-exec("find {$ROOT}/clip -regextype egrep -regex '.*[0-9]{4}/[0-9]{2}/[0-9]{2}/\.eval' | sort",
+exec("find -L {$ROOT}/clip -regextype egrep -regex '.*[0-9]{4}/[0-9]{2}/[0-9]{2}/\.eval' | sort",
      $evalFiles);
 
 foreach ($evalFiles as $evalFile) {
