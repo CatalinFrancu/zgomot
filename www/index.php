@@ -1,7 +1,7 @@
 <?
 
-$MIN_HOUR = 1;
-$MAX_HOUR = 8;
+$MIN_HOUR = 0;
+$MAX_HOUR = 24;
 $START_DATE = '10-01-2016';
 
 require '../lib/Util.php';
@@ -12,7 +12,7 @@ $h2 = Request::get('h2', $MAX_HOUR);
 $d1 = Request::get('d1', $START_DATE);
 $d2 = Request::get('d2', date('d-m-Y'));
 $day = Request::get('day', 0);
-$amp = Request::get('amp', 0);
+$amp = Request::get('amp', 1);
 
 $data = IndexParser::extract($h1, $h2, $d1, $d2, $day, $amp, 0);
 
