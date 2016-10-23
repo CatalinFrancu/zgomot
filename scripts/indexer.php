@@ -39,12 +39,22 @@ foreach ($evalFiles as $evalFile) {
     foreach ($files as $file) {
       $m = [];
       if (preg_match($MP3_FILE_PATTERN, $file, $m)) {
-        $duration = exec("mp3info -p '%S' {$dir}/{$file}");
+        $output = [];
+        exec("lame --quiet --decode {$dir}/{$file} - | " .
+             "sox -t .wav - -n stat 2>&1 | " .
+             "grep -E '(Maximum amplitude)|(Length)'",
+             $output);
+        $matches = [];
+        preg_match('/([0-9].+)$/', $output[0], $matches);
+        $duration = (int)round($matches[0]);
+        preg_match('/([0-9].+)$/', $output[1], $matches);
+        $amplitude = (int)round($matches[0] * 100);
+
         $ts = strtotime("{$m[1]}-{$m[2]}-{$m[3]} {$m[4]}:{$m[5]}:{$m[6]}");
         $dayOfWeek = date('w', $ts);
         $dayPrefix = ($dayOfWeek == 0 || $dayOfWeek == 6) ? 'we' : 'wd';
 
-        $line = "{$ts} {$duration}\n";
+        $line = "{$ts} {$duration} {$amplitude}\n";
         $fileName = "{$ROOT}/sound-index/{$dayPrefix}{$m[4]}.txt";
         file_put_contents($fileName, $line, FILE_APPEND);
         print "$file => $line";

@@ -13,8 +13,11 @@ $startDate = Request::get('d1', $START_DATE);
 $endDate = Request::get('d2', date('d-m-Y'));
 $weekdays = Request::get('wd', 1);
 $weekends = Request::get('we', 1);
+$ampHi = Request::get('ampHi', 1);
+$ampMed = Request::get('ampMed', 1);
 
-$data = IndexParser::extract($minHour, $maxHour, $startDate, $endDate, $weekdays, $weekends, 0);
+$data = IndexParser::extract($minHour, $maxHour, $startDate, $endDate,
+                             $weekdays, $weekends, $ampHi, $ampMed, 0);
 
 $smarty = new Smarty();
 $smarty->template_dir = '../templates';
@@ -26,5 +29,7 @@ $smarty->assign('startDate', $startDate);
 $smarty->assign('endDate', $endDate);
 $smarty->assign('weekdays', $weekdays);
 $smarty->assign('weekends', $weekends);
+$smarty->assign('ampHi', $ampHi);
+$smarty->assign('ampMed', $ampMed);
 $smarty->assign('pageSize', Util::PAGE_SIZE);
 $smarty->display('index.tpl');

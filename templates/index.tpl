@@ -77,6 +77,26 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-md-2 control-label">
+                nivel de zgomot
+              </label>
+
+              <div class="col-md-10">
+                <div class="checkbox">
+                  <label>
+                    <input id="ampHiCheckbox" type="checkbox" {if $ampHi}checked{/if}>
+                    mare
+                  </label>
+
+                  <label>
+                    <input id="ampMedCheckbox" type="checkbox" {if $ampMed}checked{/if}>
+                    mediu
+                  </label>
+                </div>
+              </div>
+            </div>
+
           </form>
         </div>
       </div>
@@ -109,34 +129,48 @@
         <div class="panel-heading">Rezultate (cele mai recente primele)</div>
 
         <table id="clipTable" class="table">
+          <thead>
+            <tr>
+              <th>data</th>
+              <th>durata (secunde)</th>
+              <th>zgomot</th>
+            </tr>
+          </thead>
           <tbody>
             <tr id="stemRow">
               <td>
-                <span></span>
                 <a href="#"
                    data-toggle="modal"
-                   data-target="#audioModal"
-                   >ascultă</a>
+                   data-target="#audioModal">
+                  <i class="glyphicon glyphicon-volume-up"></i>
+                  <span class="date"></span>
+                </a>
               </td>
+              <td class="duration"></td>
+              <td class="amplitude"></td>
             </tr>
+
             {foreach $data as $r}
               <tr>
                 <td>
-                  <span>{$r.date}</span>
                   <a href="#"
                      data-toggle="modal"
                      data-target="#audioModal"
                      data-clip="{$r.file}"
-                     data-date="{$r.date}"
-                     >ascultă</a>
+                     data-date="{$r.date}">
+                    <i class="glyphicon glyphicon-volume-up"></i>
+                    {$r.date}
+                  </a>
                 </td>
+                <td>{$r.duration}</td>
+                <td>{$r.amplitude}</td>
               </tr>
             {/foreach}
           </tbody>
 
           <tfoot>
             <tr>
-              <td>
+              <td colspan="3">
                 <button id="loadMoreButton" class="btn btn-primary">
                   încarcă încă {$pageSize}
                 </button>

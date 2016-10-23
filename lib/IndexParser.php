@@ -7,7 +7,8 @@ class IndexParser {
     self::$INDEX_DIR = realpath(__DIR__ . '/../sound-index/');
   }
 
-  static function extract($h1, $h2, $startDate, $endDate, $weekdays, $weekends, $page) {
+  static function extract($h1, $h2, $startDate, $endDate, $weekdays, $weekends,
+                          $ampHi, $ampMed, $page) {
     $data = [];
 
     $dayType = [];
@@ -25,12 +26,17 @@ class IndexParser {
       for ($h = $h1; $h < $h2; $h++) {
         $fileName = sprintf("%s/%s%02d.txt", self::$INDEX_DIR, $dt, $h);
         foreach (file($fileName) as $line) {
-          list ($ts, $duration) = preg_split('/\s+/', trim($line));
+          list ($ts, $duration, $amplitude) = preg_split('/\s+/', trim($line));
 
-          if (($ts >= $startTs) && ($ts < $endTs)) {
+          $goodAmp = (($ampHi && ($amplitude >= Util::AMPLITUDE_CUTOFF)) ||
+                      ($ampMed && ($amplitude < Util::AMPLITUDE_CUTOFF)));
+
+          if (($ts >= $startTs) && ($ts < $endTs) && $goodAmp) {
             $data[] = [
               'ts' => $ts,
               'duration' => $duration,
+              // 'amplitude' => ($amplitude >= Util::AMPLITUDE_CUTOFF) ? 'mare' : 'medie',
+              'amplitude' => $amplitude,
             ];
           }
         }

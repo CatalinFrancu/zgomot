@@ -8,6 +8,8 @@ $(function() {
   var endDate = null;
   var weekdays = null;
   var weekends = null;
+  var ampHi = null;
+  var ampMed = null;
   var pageSize = null;
   var pagesLoaded = 1;
 
@@ -22,6 +24,7 @@ $(function() {
     }).on('change', optionsChanged);
 
     $('#weekdayCheckbox, #weekendCheckbox').change(optionsChanged);
+    $('#ampHiCheckbox, #ampMedCheckbox').change(optionsChanged);
 
     $('#startDate, #endDate').datepicker({
       autoclose: true,
@@ -40,6 +43,8 @@ $(function() {
     endDate = $('#endDate').val();
     weekdays = $('#weekdayCheckbox').is(':checked');
     weekends = $('#weekendCheckbox').is(':checked');
+    ampHi = $('#ampHiCheckbox').is(':checked');
+    ampMed = $('#ampMedCheckbox').is(':checked');
     pageSize = $('#pageSize').text();
 
     audio = $('audio');
@@ -62,20 +67,26 @@ $(function() {
     var newStartDate = $('#startDate').val();
     var newEndDate = $('#endDate').val();
     var newWeekdays = $('#weekdayCheckbox').is(':checked');
-    var newWeekends = $('#weekendCheckbox').is(':checked');
+    var newWeekends = $('#weekendCheckbox').is(':checked')
+    var newAmpHi = $('#ampHiCheckbox').is(':checked');
+    var newAmpMed = $('#ampMedCheckbox').is(':checked');
 
     if ((newMinHour != minHour) ||
         (newMaxHour != maxHour) ||
         (newStartDate != startDate) ||
         (newEndDate != endDate) ||
         (newWeekdays != weekdays) ||
-        (newWeekends != weekends)) {
+        (newWeekends != weekends) ||
+        (newAmpHi != ampHi) ||
+        (newAmpMed != ampMed)) {
       minHour = newMinHour;
       maxHour = newMaxHour;
       startDate = newStartDate;
       endDate = newEndDate;
       weekdays = newWeekdays;
       weekends = newWeekends;
+      ampHi = newAmpHi;
+      ampMed = newAmpMed;
 
       if (timer) {
         clearTimeout(timer);
@@ -92,6 +103,8 @@ $(function() {
       d2: endDate,
       wd: +weekdays,
       we: +weekends,
+      ampHi: +ampHi,
+      ampMed: +ampMed,
     });
   }
 
@@ -107,13 +120,17 @@ $(function() {
         endDate: endDate,
         weekdays: weekdays,
         weekends: weekends,
+        ampHi: ampHi,
+        ampMed: ampMed,
         page: pagesLoaded,
       },
     }).done(function(data) {
 
       $.each(data, function(k, v) {
         var r = stemRow.clone(true);
-        r.find('span').html(v.date);
+        r.find('.date').html(v.date);
+        r.find('.duration').html(v.duration);
+        r.find('.amplitude').html(v.amplitude);
         r.find('a').data('clip', v.file).data('date', v.date);
         $('#clipTable > tbody').append(r);
       });
