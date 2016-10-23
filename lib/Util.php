@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Util {
   const PAGE_SIZE = 100;

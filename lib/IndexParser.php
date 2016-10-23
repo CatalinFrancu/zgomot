@@ -1,4 +1,4 @@
-<?
+<?php
 
 class IndexParser {
   static $INDEX_DIR;

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $MIN_HOUR = 0;
 $MAX_HOUR = 24;
