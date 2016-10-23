@@ -15,12 +15,6 @@
     <link href="css/main.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div style="display: none">
-      <span id="minHour">{$minHour}</span>
-      <span id="maxHour">{$maxHour}</span>
-      <span id="pageSize">{$pageSize}</span>
-    </div>
-
     <div class="container" role="main">
 
       <h3>Raport al lătraturilor</h3>
@@ -35,13 +29,26 @@
                 intervalul orar
               </label>
 
-              <div class="col-md-10">
-                <input id="hourSlider"
-                       type="text"
-                       class="form-control"
-                       data-slider-value="[{$minHour}, {$maxHour}]"
-                       >
-                
+              <div class="col-md-10 form-inline">
+
+                <select id="h1" name="h1" class="form-control">
+                  {for $h=0 to 23}
+                    <option value="{$h}" {if $h == $h1}selected{/if}>
+                      {$h|string_format:"%02d:00"}
+                    </option>
+                  {/for}
+                </select>
+
+                &mdash;
+
+                <select id="h2" name="h2" class="form-control">
+                  {for $h=1 to 24}
+                    <option value="{$h}" {if $h == $h2}selected{/if}>
+                      {$h|string_format:"%02d:00"}
+                    </option>
+                  {/for}
+                </select>
+
               </div>
             </div>
 
@@ -51,9 +58,11 @@
               </label>
 
               <div class="col-md-10 form-inline">
-                <input type="text" id="startDate" class="form-control" value="{$startDate}">
+                <input type="text" id="d1" name="d1" class="form-control"
+                       value="{$d1}">
                 &mdash;
-                <input type="text" id="endDate" class="form-control" value="{$endDate}">
+                <input type="text" id="d2" name="d2" class="form-control"
+                       value="{$d2}">
               </div>
             </div>
 
@@ -63,17 +72,17 @@
               </label>
 
               <div class="col-md-10">
-                <div class="checkbox">
-                  <label>
-                    <input id="weekdayCheckbox" type="checkbox" {if $weekdays}checked{/if}>
+                <select id="day" name="day" class="form-control">
+                  <option value="0" {if $day == 0}selected{/if}>
+                    toate
+                  </option>
+                  <option value="1" {if $day == 1}selected{/if}>
                     luni-vineri
-                  </label>
-
-                  <label>
-                    <input id="weekendCheckbox" type="checkbox" {if $weekends}checked{/if}>
+                  </option>
+                  <option value="2" {if $day == 2}selected{/if}>
                     sâmbătă-duminică
-                  </label>
-                </div>
+                  </option>
+                </select>
               </div>
             </div>
 
@@ -83,17 +92,26 @@
               </label>
 
               <div class="col-md-10">
-                <div class="checkbox">
-                  <label>
-                    <input id="ampHiCheckbox" type="checkbox" {if $ampHi}checked{/if}>
+                <select id="amp" name="amp" class="form-control">
+                  <option value="0" {if $amp == 0}selected{/if}>
+                    oricare
+                  </option>
+                  <option value="1" {if $amp == 1}selected{/if}>
                     mare
-                  </label>
-
-                  <label>
-                    <input id="ampMedCheckbox" type="checkbox" {if $ampMed}checked{/if}>
+                  </option>
+                  <option value="2" {if $amp == 2}selected{/if}>
                     mediu
-                  </label>
-                </div>
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">
+                  <i class="glyphicon glyphicon-refresh"></i>
+                  reafișează
+                </button>
               </div>
             </div>
 
@@ -171,7 +189,11 @@
           <tfoot>
             <tr>
               <td colspan="3">
-                <button id="loadMoreButton" class="btn btn-primary">
+                <button id="loadMoreButton"
+                        class="btn btn-primary"
+                        {if count($data) < $pageSize}disabled{/if}
+                        >
+                  <i class="glyphicon glyphicon-plus"></i>
                   încarcă încă {$pageSize}
                 </button>
               </td>

@@ -7,29 +7,24 @@ $START_DATE = '10-01-2016';
 require '../lib/Util.php';
 require '../lib/smarty/Smarty.class.php';
 
-$minHour = Request::get('h1', $MIN_HOUR);
-$maxHour = Request::get('h2', $MAX_HOUR);
-$startDate = Request::get('d1', $START_DATE);
-$endDate = Request::get('d2', date('d-m-Y'));
-$weekdays = Request::get('wd', 1);
-$weekends = Request::get('we', 1);
-$ampHi = Request::get('ampHi', 1);
-$ampMed = Request::get('ampMed', 1);
+$h1 = Request::get('h1', $MIN_HOUR);
+$h2 = Request::get('h2', $MAX_HOUR);
+$d1 = Request::get('d1', $START_DATE);
+$d2 = Request::get('d2', date('d-m-Y'));
+$day = Request::get('day', 0);
+$amp = Request::get('amp', 0);
 
-$data = IndexParser::extract($minHour, $maxHour, $startDate, $endDate,
-                             $weekdays, $weekends, $ampHi, $ampMed, 0);
+$data = IndexParser::extract($h1, $h2, $d1, $d2, $day, $amp, 0);
 
 $smarty = new Smarty();
 $smarty->template_dir = '../templates';
 $smarty->compile_dir = '../templates_c';
 $smarty->assign('data', $data);
-$smarty->assign('minHour', $minHour);
-$smarty->assign('maxHour', $maxHour);
-$smarty->assign('startDate', $startDate);
-$smarty->assign('endDate', $endDate);
-$smarty->assign('weekdays', $weekdays);
-$smarty->assign('weekends', $weekends);
-$smarty->assign('ampHi', $ampHi);
-$smarty->assign('ampMed', $ampMed);
+$smarty->assign('h1', $h1);
+$smarty->assign('h2', $h2);
+$smarty->assign('d1', $d1);
+$smarty->assign('d2', $d2);
+$smarty->assign('day', $day);
+$smarty->assign('amp', $amp);
 $smarty->assign('pageSize', Util::PAGE_SIZE);
 $smarty->display('index.tpl');

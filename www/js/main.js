@@ -1,51 +1,19 @@
 $(function() {
   var audio = null;
   var stemRow = null;
-  var timer = null;
-  var minHour = null;
-  var maxHour = null;
-  var startDate = null;
-  var endDate = null;
-  var weekdays = null;
-  var weekends = null;
-  var ampHi = null;
-  var ampMed = null;
-  var pageSize = null;
   var pagesLoaded = 1;
 
   function init() {
-    $('#hourSlider').slider({
-      min: 0,
-      max: 24,
-      ticks: range(0, 24),
-      ticks_labels: range(0, 24),
-      tooltip: 'always',
-      tooltip_split: true,
-    }).on('change', optionsChanged);
-
-    $('#weekdayCheckbox, #weekendCheckbox').change(optionsChanged);
-    $('#ampHiCheckbox, #ampMedCheckbox').change(optionsChanged);
-
-    $('#startDate, #endDate').datepicker({
+    $('#d1, #d2').datepicker({
       autoclose: true,
       daysOfWeekHighlighted: '0,6',
       format: 'dd-mm-yyyy',
       language: 'ro',
       todayBtn: 'linked',
       todayHighlight: true,
-    }).on('change', optionsChanged);
+    });
 
     stemRow = $('#stemRow').detach().removeAttr('id');
-
-    minHour = $('#minHour').text();
-    maxHour = $('#maxHour').text();
-    startDate = $('#startDate').val();
-    endDate = $('#endDate').val();
-    weekdays = $('#weekdayCheckbox').is(':checked');
-    weekends = $('#weekendCheckbox').is(':checked');
-    ampHi = $('#ampHiCheckbox').is(':checked');
-    ampMed = $('#ampMedCheckbox').is(':checked');
-    pageSize = $('#pageSize').text();
 
     audio = $('audio');
     $('#audioModal').on('show.bs.modal', modalShown);
@@ -60,68 +28,16 @@ $(function() {
     }
   }
 
-  function optionsChanged() {
-    var parts = $('#hourSlider').val().split(',');
-    var newMinHour = parts[0];
-    var newMaxHour = parts[1];
-    var newStartDate = $('#startDate').val();
-    var newEndDate = $('#endDate').val();
-    var newWeekdays = $('#weekdayCheckbox').is(':checked');
-    var newWeekends = $('#weekendCheckbox').is(':checked')
-    var newAmpHi = $('#ampHiCheckbox').is(':checked');
-    var newAmpMed = $('#ampMedCheckbox').is(':checked');
-
-    if ((newMinHour != minHour) ||
-        (newMaxHour != maxHour) ||
-        (newStartDate != startDate) ||
-        (newEndDate != endDate) ||
-        (newWeekdays != weekdays) ||
-        (newWeekends != weekends) ||
-        (newAmpHi != ampHi) ||
-        (newAmpMed != ampMed)) {
-      minHour = newMinHour;
-      maxHour = newMaxHour;
-      startDate = newStartDate;
-      endDate = newEndDate;
-      weekdays = newWeekdays;
-      weekends = newWeekends;
-      ampHi = newAmpHi;
-      ampMed = newAmpMed;
-
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(wipeAndReload, 1000);
-    }
-  }
-
-  function wipeAndReload() {
-    window.location.search = $.param({
-      h1: minHour,
-      h2: maxHour,
-      d1: startDate,
-      d2: endDate,
-      wd: +weekdays,
-      we: +weekends,
-      ampHi: +ampHi,
-      ampMed: +ampMed,
-    });
-  }
-
   function loadData() {
-    // console.log('reloading data for ' + minHour + ', ' + maxHour + ', ' +
-    //             weekdays + ', ' + weekends);
     $.ajax({
       url: 'ajax/getPage.php',
       data: {
-        minHour: minHour,
-        maxHour: maxHour,
-        startDate: startDate,
-        endDate: endDate,
-        weekdays: weekdays,
-        weekends: weekends,
-        ampHi: ampHi,
-        ampMed: ampMed,
+        h1: $('#h1').val(),
+        h2: $('#h2').val(),
+        d1: $('#d1').val(),
+        d2: $('#d2').val(),
+        day: $('#day').val(),
+        amp: $('#amp').val(),
         page: pagesLoaded,
       },
     }).done(function(data) {
@@ -156,15 +72,6 @@ $(function() {
 
   function modalHidden() {
     audio.get(0).pause();
-  }
-
-  // inclusive range
-  function range(x, y) {
-    var r = [];
-    for (var i = x; i <= y; i++) {
-      r.push(i);
-    }
-    return r;
   }
 
   init();

@@ -7,20 +7,17 @@ class IndexParser {
     self::$INDEX_DIR = realpath(__DIR__ . '/../sound-index/');
   }
 
-  static function extract($h1, $h2, $startDate, $endDate, $weekdays, $weekends,
-                          $ampHi, $ampMed, $page) {
+  static function extract($h1, $h2, $d1, $d2, $day, $amp, $page) {
     $data = [];
 
-    $dayType = [];
-    if ($weekdays) {
-      $dayType[] = 'wd';
-    }
-    if ($weekends) {
-      $dayType[] = 'we';
+    switch ($day) {
+    case 0: $dayType = ['wd', 'we']; break;
+    case 1: $dayType = ['wd']; break;
+    case 2: $dayType = ['we']; break;
     }
 
-    $startTs = self::dateToTimestamp($startDate);
-    $endTs = self::dateToTimestamp($endDate) + 86400; // start of the next day
+    $startTs = self::dateToTimestamp($d1);
+    $endTs = self::dateToTimestamp($d2) + 86400; // start of the next day
 
     foreach ($dayType as $dt) {
       for ($h = $h1; $h < $h2; $h++) {
@@ -28,14 +25,15 @@ class IndexParser {
         foreach (file($fileName) as $line) {
           list ($ts, $duration, $amplitude) = preg_split('/\s+/', trim($line));
 
-          $goodAmp = (($ampHi && ($amplitude >= Util::AMPLITUDE_CUTOFF)) ||
-                      ($ampMed && ($amplitude < Util::AMPLITUDE_CUTOFF)));
+          $goodAmp = (($amp == 0) ||
+                      (($amp == 1) && ($amplitude >= Util::AMPLITUDE_CUTOFF)) ||
+                      (($amp == 2) && ($amplitude < Util::AMPLITUDE_CUTOFF)));
 
           if (($ts >= $startTs) && ($ts < $endTs) && $goodAmp) {
             $data[] = [
               'ts' => $ts,
               'duration' => $duration,
-              // 'amplitude' => ($amplitude >= Util::AMPLITUDE_CUTOFF) ? 'mare' : 'medie',
+              // 'amplitude' => ($amplitude >= Util::AMPLITUDE_CUTOFF) ? 'mare' : 'mediu',
               'amplitude' => $amplitude,
             ];
           }
