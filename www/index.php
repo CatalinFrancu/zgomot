@@ -3,6 +3,7 @@
 $MIN_HOUR = 0;
 $MAX_HOUR = 24;
 $START_DATE = '10-01-2016';
+$LOCAL = false; // when true, do not hit any external URLs
 
 require '../lib/Util.php';
 require '../lib/smarty/Smarty.class.php';
@@ -26,5 +27,6 @@ $smarty->assign('d1', $d1);
 $smarty->assign('d2', $d2);
 $smarty->assign('day', $day);
 $smarty->assign('amp', $amp);
+$smarty->assign('local', $LOCAL);
 $smarty->assign('pageSize', Util::PAGE_SIZE);
 $smarty->display('index.tpl');
