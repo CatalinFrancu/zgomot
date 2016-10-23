@@ -4,6 +4,8 @@ $(function() {
   var pagesLoaded = 1;
 
   function init() {
+    $('#h1, #h2').change(adjustOtherHour);
+
     $('#d1, #d2').datepicker({
       autoclose: true,
       daysOfWeekHighlighted: '0,6',
@@ -24,6 +26,18 @@ $(function() {
     if (window.location.hash) {
       var matches = window.location.hash.match(/^#(\d+):(\d+):(\d):(\d)$/);
       if (matches) {
+      }
+    }
+  }
+
+  function adjustOtherHour() {
+    var h1 = Number($('#h1').val());
+    var h2 = Number($('#h2').val());
+    if (h1 >= h2) {
+      if ($(this).attr('id') == 'h1') {
+        $('#h2').val(h1 + 1);
+      } else {
+        $('#h1').val(h2 - 1);
       }
     }
   }
