@@ -9,6 +9,12 @@ class Util {
     require_once 'IndexParser.php';
     require_once 'Request.php';
   }
+
+  static function redirect($location) {
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: $location");
+    exit;
+  }
 }
 
 Util::init();

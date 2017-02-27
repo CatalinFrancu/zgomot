@@ -13,6 +13,8 @@ if ($durationIndex != null) {
   $endTimestamp = time() + $duration;
   $fileName = Config::get('playServer.watchFile');
   file_put_contents($fileName, $endTimestamp);
+
+  Util::redirect('play.php');
 }
 
 $smarty = new Smarty();
