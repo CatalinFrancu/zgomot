@@ -1,0 +1,5 @@
+[global]
+minHour = 0
+maxHour = 24
+startDate = 10-01-2016
+local = false

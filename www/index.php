@@ -1,16 +1,12 @@
 <?php
 
-$MIN_HOUR = 0;
-$MAX_HOUR = 24;
-$START_DATE = '10-01-2016';
-$LOCAL = false; // when true, do not hit any external URLs
-
 require '../lib/Util.php';
+require '../lib/Config.php';
 require '../lib/smarty/Smarty.class.php';
 
-$h1 = Request::get('h1', $MIN_HOUR);
-$h2 = Request::get('h2', $MAX_HOUR);
-$d1 = Request::get('d1', $START_DATE);
+$h1 = Request::get('h1', Config::get('global.minHour'));
+$h2 = Request::get('h2', Config::get('global.maxHour'));
+$d1 = Request::get('d1', Config::get('global.startDate'));
 $d2 = Request::get('d2', date('d-m-Y'));
 $day = Request::get('day', 0);
 $amp = Request::get('amp', 1);
@@ -27,6 +23,6 @@ $smarty->assign('d1', $d1);
 $smarty->assign('d2', $d2);
 $smarty->assign('day', $day);
 $smarty->assign('amp', $amp);
-$smarty->assign('local', $LOCAL);
+$smarty->assign('local', Config::get('global.local') /* global.local, hehe */);
 $smarty->assign('pageSize', Util::PAGE_SIZE);
 $smarty->display('index.tpl');
