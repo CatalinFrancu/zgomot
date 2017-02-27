@@ -3,3 +3,12 @@ minHour = 0
 maxHour = 24
 startDate = 10-01-2016
 local = false
+
+[playServer]
+watchFile = /tmp/playServer.dat
+duration[] = 30
+duration[] = 60
+duration[] = 120
+duration[] = 180
+duration[] = 300
+duration[] = 600

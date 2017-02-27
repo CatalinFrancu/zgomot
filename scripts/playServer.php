@@ -4,18 +4,21 @@
  * Watches a file and plays sound files based on specifications.
  **/
 
-$FILE = '/tmp/playServer.dat';
+require __DIR__ . '/../lib/Config.php';
 
-touch($FILE);
+$file = Config::get('playServer.watchFile');
+
+touch($file);
+chmod($file, 0666);
 
 $inot = inotify_init();
-$watch = inotify_add_watch($inot, $FILE, IN_MODIFY);
+$watch = inotify_add_watch($inot, $file, IN_MODIFY);
 
 $events = inotify_read($inot);
 while (!($events[0]['mask'] & IN_IGNORED)) { // IN_IGNORED is raised when the file is deleted
 
-  // $events contains some useful info; we only care about the knowledge that $FILE was modified.
-  $endTimestamp = (int)file_get_contents($FILE);
+  // $events contains some useful info; we only care about the knowledge that $file was modified.
+  $endTimestamp = (int)file_get_contents($file);
   while (time() < $endTimestamp) {
     printf("Doing something until %d, time is now %d\n", $endTimestamp, time());
     playSound();
