@@ -16,14 +16,19 @@ $watch = inotify_add_watch($inot, $file, IN_MODIFY);
 
 $events = inotify_read($inot);
 while (!($events[0]['mask'] & IN_IGNORED)) { // IN_IGNORED is raised when the file is deleted
-
   // $events contains some useful info; we only care about the knowledge that $file was modified.
-  $endTimestamp = (int)file_get_contents($file);
-  while (time() < $endTimestamp) {
-    printf("Doing something until %d, time is now %d\n", $endTimestamp, time());
-    playSound();
-  }
+  // Re-read the file every time, in case it keeps changing.
 
+  do {
+    $now = time();
+    $endTimestamp = (int)file_get_contents($file);
+
+    if ($now < $endTimestamp) {
+      printf("Doing something until %d, time is now %d\n", $endTimestamp, $now);
+      playSound();
+    }
+  } while ($now < $endTimestamp);
+  
   $events = inotify_read($inot);
 }
 
