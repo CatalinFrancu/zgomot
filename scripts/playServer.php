@@ -4,7 +4,7 @@
  * Watches a file and plays sound files based on specifications.
  **/
 
-require __DIR__ . '/../lib/Config.php';
+require __DIR__ . '/../lib/Util.php';
 
 $file = Config::get('playServer.watchFile');
 
