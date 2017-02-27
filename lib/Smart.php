@@ -16,6 +16,7 @@ class Smart {
   }
 
   static function display($templateName) {
+    self::assign('flashMessages', FlashMessage::getMessages());
     self::$theSmarty->display($templateName);
   }
 

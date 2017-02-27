@@ -23,6 +23,7 @@
   </head>
   <body>
     <div class="container" role="main">
+      {include "bits/flashMessages.tpl"}
       {block "content"}{/block}
     </div>
 
