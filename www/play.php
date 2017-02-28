@@ -11,6 +11,7 @@ if ($durationIndex != null) {
   $endTimestamp = time() + $duration;
   $fileName = Config::get('playServer.watchFile');
   file_put_contents($fileName, $endTimestamp);
+  chmod($fileName, 0666);
 
   FlashMessage::add(sprintf('Am pornit sunetul până la %s.',
                             date('H:i:s', $endTimestamp)),

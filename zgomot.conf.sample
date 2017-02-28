@@ -6,6 +6,14 @@ local = false
 
 [playServer]
 watchFile = /tmp/playServer.dat
+
+; where to look for sounds to play back
+soundDir = /dev/null
+
+; only consider files with these extensions
+soundExt[] = webm
+
+; choices for the play buttons (in seconds)
 duration[] = 30
 duration[] = 60
 duration[] = 120

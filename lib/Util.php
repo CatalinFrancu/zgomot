@@ -31,6 +31,10 @@ class Util {
       (strpos($_SERVER['REQUEST_URI'], '/ajax/') !== false);
   }
 
+  // converts a number of seconds to HH:MM:SS
+  static function secondsToTime($s) {
+    return sprintf('%02d:%02d:%02d', $s / 3600, $s / 60 % 60, $s % 60);
+  }
 }
 
 Util::init();
