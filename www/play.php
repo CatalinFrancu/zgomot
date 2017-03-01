@@ -2,6 +2,12 @@
 
 require '../lib/Util.php';
 
+$ip = $_SERVER['REMOTE_ADDR'];
+if (!Util::validIp($ip, Config::get('playServer.validIps'))) {
+  FlashMessage::add('Nu puteți accesa această pagină.');
+  Util::redirect('index.php');
+}
+
 $durationIndex = Request::get('durationIndex');
 
 if ($durationIndex != null) {
