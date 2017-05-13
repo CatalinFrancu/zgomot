@@ -15,5 +15,12 @@
         </button>
       </div>
     {/foreach}
+
+    <div class="row voffset5">
+      <button class="btn btn-block btn-danger" name="stop" value="1">
+        <i class="glyphicon glyphicon-volume-off"></i>
+        oprește
+      </button>
+    </div>
   </form>
 {/block}

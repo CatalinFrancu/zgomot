@@ -18,9 +18,8 @@ soundDir = /dev/null
 soundExt[] = webm
 
 ; choices for the play buttons (in seconds)
+duration[] = 10
 duration[] = 30
 duration[] = 60
 duration[] = 120
 duration[] = 180
-duration[] = 300
-duration[] = 600

@@ -7,7 +7,8 @@
 require __DIR__ . '/../lib/Util.php';
 
 define('DURATION_COMMAND', 'ffprobe -i "%s" -show_entries format=duration -v quiet -of csv="p=0"');
-define('PLAY_COMMAND', "mpv '%s' --start=%s --length=%s --really-quiet");
+define('PLAY_COMMAND', "mpv '%s' --start=%s --length=%s --really-quiet > /dev/null 2>&1 &");
+define('KILL_COMMAND', 'killall mpv');
 
 $file = Config::get('playServer.watchFile');
 touch($file);
@@ -19,17 +20,15 @@ $watch = inotify_add_watch($inot, $file, IN_MODIFY);
 $events = inotify_read($inot);
 while (!($events[0]['mask'] & IN_IGNORED)) { // IN_IGNORED is raised when the file is deleted
   // $events contains some useful info; we only care about the knowledge that $file was modified.
-  // Re-read the file every time, in case it keeps changing.
 
-  do {
-    $now = time();
-    $endTimestamp = (int)file_get_contents($file);
+  $now = time();
+  $endTimestamp = (int)file_get_contents($file);
 
-    if ($now < $endTimestamp) {
-      printf("Playing sound until %d, time is now %d\n", $endTimestamp, $now);
-      playSound($endTimestamp - $now);
-    }
-  } while ($now < $endTimestamp);
+  system(KILL_COMMAND);
+  if ($now < $endTimestamp) {
+    printf("Playing sound until %d, time is now %d\n", $endTimestamp, $now);
+    playSound($endTimestamp - $now);
+  }
   
   $events = inotify_read($inot);
 }

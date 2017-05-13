@@ -2,6 +2,7 @@
 <html lang="ro">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{block "title"}{/block}</title>
     {if $local}
       <script src="js/third-party/jquery-2.2.4.min.js"></script>

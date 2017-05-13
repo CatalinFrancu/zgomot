@@ -9,15 +9,23 @@ if (!Util::validIp($ip, Config::get('playServer.validIps'))) {
 }
 
 $durationIndex = Request::get('durationIndex');
+$stop = Request::get('stop');
+
+$fileName = Config::get('playServer.watchFile');
+
+if ($stop) {
+  file_put_contents($fileName, 0); // cause playback to stop
+
+  FlashMessage::add('Am oprit sunetul.', 'warning');
+  Util::redirect('play.php');
+}
 
 if ($durationIndex != null) {
   $durations = Config::get('playServer.duration');
   $duration = $durations[$durationIndex];
 
   $endTimestamp = time() + $duration;
-  $fileName = Config::get('playServer.watchFile');
   file_put_contents($fileName, $endTimestamp);
-  chmod($fileName, 0666);
 
   FlashMessage::add(sprintf('Am pornit sunetul până la %s.',
                             date('H:i:s', $endTimestamp)),
