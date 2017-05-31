@@ -8,9 +8,9 @@
   <h3>Who let the dogs out?</h3>
 
   <form method="post">
-    {foreach $durations as $i => $d}
+    {foreach $durations as $d}
       <div class="row voffset2">
-        <button class="btn btn-block btn-default" name="durationIndex" value="{$i}">
+        <button class="btn btn-block btn-default" name="duration" value="{$d}">
           {include "bits/duration.tpl" duration=$d}
         </button>
       </div>

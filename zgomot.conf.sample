@@ -4,12 +4,9 @@ maxHour = 24
 startDate = 10-01-2016
 local = false
 
-[playServer]
+[play]
 ; who can access play.php - list of IPs and/or CIDR, delimited by commas and/or whitespace
 validIps = "127.0.0.1"
-
-; file through which play.php and playServer.php communicate
-watchFile = /tmp/playServer.dat
 
 ; where to look for sounds to play back
 soundDir = /dev/null
