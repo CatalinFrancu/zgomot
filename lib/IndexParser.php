@@ -43,22 +43,22 @@ class IndexParser {
 
     // sort the data
     usort($data, function($a, $b) {
-      return $a['ts'] < $b['ts'];
+      return $a['ts'] <=> $b['ts'];
     });
 
     // extract a page
     $data = array_slice($data, $page * Util::PAGE_SIZE, Util::PAGE_SIZE);
 
     foreach ($data as &$r) {
-      $year = strftime('%Y', $r['ts']);
-      $month = strftime('%m', $r['ts']);
-      $day = strftime('%d', $r['ts']);
-      $hour = strftime('%H', $r['ts']);
-      $minute = strftime('%M', $r['ts']);
-      $second = strftime('%S', $r['ts']);
+      $year = date('Y', $r['ts']);
+      $month = date('m', $r['ts']);
+      $day = date('d', $r['ts']);
+      $hour = date('H', $r['ts']);
+      $minute = date('i', $r['ts']);
+      $second = date('s', $r['ts']);
 
       $r['file'] = "clip/$year/$month/$day/$year-$month-$day-$hour-$minute-$second.mp3";
-      $r['date'] = strftime('%A, %e %B %Y, %H:%M:%S', $r['ts']);
+      $r['date'] = date('l, j F Y, H:i:s', $r['ts']);
     }
 
     return $data;
